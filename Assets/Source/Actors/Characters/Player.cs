@@ -84,6 +84,7 @@ namespace DungeonCrawl.Actors.Characters
         private void UpdateInventoryUI()
         {
             string inventoryText = "Ekwipunek:\n";
+            Debug.Log("Inventory Count: " + inventory.Count);
             foreach (var item in inventory)
             {
                 inventoryText += item.DefaultName + "\n";
