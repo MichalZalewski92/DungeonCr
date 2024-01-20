@@ -42,19 +42,19 @@ namespace DungeonCrawl.Actors
 
             var actorAtTargetPosition = ActorManager.Singleton.GetActorAt(targetPosition);
 
-            if (actorAtTargetPosition == null)
+            if (actorAtTargetPosition == null || actorAtTargetPosition.OnCollision(this))
             {
                 // No obstacle found, just move
                 Position = targetPosition;
             }
-            else
-            {
-                if (actorAtTargetPosition.OnCollision(this))
-                {
-                    // Allowed to move
-                    Position = targetPosition;
-                }
-            }
+            //else
+            //{
+            //    if (actorAtTargetPosition.OnCollision(this))
+            //    {
+            //        // Allowed to move
+            //        Position = targetPosition;
+            //    }
+            //}
         }
 
         /// <summary>

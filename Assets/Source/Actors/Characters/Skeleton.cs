@@ -6,7 +6,7 @@ namespace DungeonCrawl.Actors.Characters
     {
         public override bool OnCollision(Actor anotherActor)
         {
-            return true;
+            return false;
         }
 
         protected override void OnDeath()

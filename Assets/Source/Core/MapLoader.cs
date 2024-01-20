@@ -3,6 +3,9 @@ using DungeonCrawl.Actors.Static;
 using System;
 using System.Text.RegularExpressions;
 using UnityEngine;
+using DungeonCrawl.Actors.Items;
+
+using UnityEngine.SocialPlatforms.Impl;
 
 namespace DungeonCrawl.Core
 {
@@ -57,6 +60,14 @@ namespace DungeonCrawl.Core
                     break;
                 case 's':
                     ActorManager.Singleton.Spawn<Skeleton>(position);
+                    ActorManager.Singleton.Spawn<Floor>(position);
+                    break;
+                case 'k':
+                    ActorManager.Singleton.Spawn<Key>(position);
+                    ActorManager.Singleton.Spawn<Floor>(position);
+                    break;
+                case 'm':
+                    ActorManager.Singleton.Spawn<Sword>(position);
                     ActorManager.Singleton.Spawn<Floor>(position);
                     break;
                 case ' ':
