@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using DungeonCrawl.Actors;
+using DungeonCrawl.Actors.Characters;
 using UnityEngine;
 using UnityEngine.U2D;
+using UnityEngine.UIElements;
 
 namespace DungeonCrawl.Core
 {
@@ -11,6 +13,8 @@ namespace DungeonCrawl.Core
     /// </summary>
     public class ActorManager : MonoBehaviour
     {
+        int MapWidth = 30;
+        int MapHeight = 30; 
         /// <summary>
         ///     ActorManager singleton
         /// </summary>
@@ -114,10 +118,104 @@ namespace DungeonCrawl.Core
 
             go.name = actorName ?? component.DefaultName;
             component.Position = (x, y);
+        
 
             _allActors.Add(component);
 
             return component;
         }
+        public IEnumerable<Skeleton> GetAllSkeletons()
+        {
+            return _allActors.OfType<Skeleton>();
+        }
+        private (int x, int y) GetRandomPosition()
+        {
+            
+            int randomX = UnityEngine.Random.Range(0, MapWidth);
+            int randomY = UnityEngine.Random.Range(0, MapHeight);
+
+            return (randomX, randomY);
+        }
+
+
+        public void MoveSkeletons()
+        {
+            foreach (var skeleton in GetAllSkeletons())
+            {
+                
+               
+                Direction randomDirection = (Direction)UnityEngine.Random.Range(0, 4); 
+                Debug.Log(randomDirection);
+
+               
+                (int newX, int newY) = GetNewPosition(skeleton.Position, randomDirection);
+                
+
+                
+               
+                
+                Debug.Log(skeleton.Position);
+                skeleton.Position = (newX, newY);
+                
+            }
+        }
+
+        private (int x, int y) GetNewPosition((int x, int y) currentPosition, Direction direction)
+        {
+            int newX = currentPosition.x;
+            int newY = currentPosition.y;
+
+            switch (direction)
+            {
+                case Direction.Up:
+                    newY++;
+                    break;
+                case Direction.Down:
+                    newY--;
+                    break;
+                case Direction.Left:
+                    newX--;
+                    break;
+                case Direction.Right:
+                    newX++;
+                    break;
+            }
+
+            return (newX, newY);
+        }
+        public void SetActorPosition(Actor actor, (int x, int y) newPosition)
+        {
+            actor.Position = newPosition;
+        }
+
+        public void TryMove(Actor actor, (int x, int y) newPosition)
+        {
+            if (CanMoveTo(newPosition))
+            {
+                SetActorPosition(actor, newPosition);
+            }
+        }
+
+        private bool CanMoveTo((int x, int y) position)
+        {
+            
+            if (position.x < 0 || position.x >= MapWidth || position.y < 0 || position.y >= MapHeight)
+            {
+                return false;
+            }
+
+            
+            var actorAtNewPosition = ActorManager.Singleton.GetActorAt(position);
+            if (actorAtNewPosition != null && actorAtNewPosition != this)
+            {
+                return false;
+            }
+
+        
+            return true;
+        }
+
+
+  
     }
 }
